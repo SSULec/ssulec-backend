@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: soongsillec22
+      MYSQL_DATABASE: ssulec
+      MYSQL_USER: ssulec
+      MYSQL_PASSWORD: ssulec12
+      TZ: Asia/Seoul
+    ports:
+      - 3306:3306
+    volumes:
+      - ssulec_mysql_volume:/var/lib/mysql
+      - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  ssulec_mysql_volume:
