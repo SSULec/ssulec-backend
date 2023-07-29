@@ -18,8 +18,9 @@ public class UserController {
     UserRepository userRepository;
     UserModelAssembler userModelAssembler;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, UserModelAssembler userModelAssembler) {
         this.userRepository = userRepository;
+        this.userModelAssembler = userModelAssembler;
     }
 
     @GetMapping("/user/{id}")
