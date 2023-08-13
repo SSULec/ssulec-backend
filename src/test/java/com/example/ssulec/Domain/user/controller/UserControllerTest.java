@@ -7,10 +7,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -45,6 +51,22 @@ class UserControllerTest {
         //when
         mvc.perform(get("/user"))
                 //then
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @WithMockUser(username = "ssulec", password = "ssulec12")
+    void add() throws Exception{
+        //given
+        User user = new User("1234", "temp@abc.com", "name");
+        //when
+        mvc.perform(post("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(user.toString()))
+        //then
+            .andExpect(status().isOk())
+            .andExpect(content().string(user.toString()))
+            .andDo(print());
     }
 }

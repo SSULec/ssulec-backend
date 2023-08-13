@@ -6,9 +6,9 @@ import com.example.ssulec.Domain.user.exception.UserNotFoundException;
 import com.example.ssulec.Domain.user.repository.UserRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,5 +37,14 @@ public class UserController {
                 .map(userModelAssembler::toModel)
                 .toList();
         return CollectionModel.of(users);
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<?> add(@RequestBody User user) {
+        EntityModel<User> model = userModelAssembler.toModel(userRepository.save(user));
+
+        return ResponseEntity
+                .created(model.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(model);
     }
 }
