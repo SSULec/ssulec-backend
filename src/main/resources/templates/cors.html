@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    axios.get("http://localhost:8080/user")
+        .then(function (response) {
+            // 성공한 경우 실행
+            console.log(response);
+        })
+        .catch(function (error) {
+            // 에러인 경우 실행
+            console.log(error);
+        })
+        .then(function () {
+            // 항상 실행
+        });
+    axios.post('http://localhost:8080/user',
+        {
+            email: "temp@naver.com",
+            password: "12345",
+            name: "홍길동",
+        },
+
+    )
+        .then(function (response) {
+            // 성공한 경우 실행
+            console.log(response);
+        })
+        .catch(function (error) {
+            // 에러인 경우 실행
+            console.log(error);
+        })
+        .then(function () {
+            // 항상 실행
+        });
+
+</script>
+</body>
+</html>
