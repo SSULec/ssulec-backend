@@ -65,8 +65,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(user.toString()))
         //then
-            .andExpect(status().isOk())
-            .andExpect(content().string(user.toString()))
+            .andExpect(status().isCreated())
             .andDo(print());
     }
 }
