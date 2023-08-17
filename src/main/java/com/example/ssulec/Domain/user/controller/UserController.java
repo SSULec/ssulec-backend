@@ -2,6 +2,7 @@ package com.example.ssulec.Domain.user.controller;
 
 import com.example.ssulec.Domain.user.assembler.UserModelAssembler;
 import com.example.ssulec.Domain.user.domain.User;
+import com.example.ssulec.Domain.user.dto.UserLoginDto;
 import com.example.ssulec.Domain.user.exception.UserNotFoundException;
 import com.example.ssulec.Domain.user.repository.UserRepository;
 import org.springframework.hateoas.CollectionModel;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -46,5 +47,17 @@ public class UserController {
         return ResponseEntity
                 .created(model.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(model);
+    }
+
+    @PostMapping("/user/login")
+    public boolean login(@RequestBody UserLoginDto userLoginDto){
+        Optional<User> userOptional = userRepository.findByEmail(userLoginDto.email());
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            return user.getPassword().equals(userLoginDto.password());
+        }
+        throw new UserNotFoundException("User not found");
     }
 }
